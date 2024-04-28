@@ -16,7 +16,7 @@ public class Main {
         DzialPracownikow.nazwaDzialow.forEach(dzial -> System.out.println(dzial));
 
         System.out.println("\nTest klasy specjalista, klasy uzytkownik, i  listy pracownikow");
-        Specjalista spec1 = Specjalista.createSpecjalista("Bartosz","Jakubowski","Wnetrza","06/05/1999","Lazienki");
+        Specjalista spec1 = Specjalista.createSpecjalista("Bart","Hmam","Wnetrza","06/01/1996","Lazienki");
         Specjalista spec2 = Specjalista.createSpecjalista("Julia","Zugaj","Wnetrza","02/05/2000","Kuchnie");
         Specjalista spec3 = Specjalista.createSpecjalista("Jan","Kowalski","Ogrody","12/12/2001","Drzewka");
         Specjalista spec4 = Specjalista.createSpecjalista("Henryk","Polonowki","Finanse","10/15/1978","Tax Evasion");
@@ -133,15 +133,21 @@ public class Main {
         System.out.println("rodzaj: " + z.getrodzajZlecenia());
         System.out.println("Status: " + z.getstatusZlecenia());
 
+        System.out.println("\nTest statycznej funkcji ktora zwraca zlecenie/praca (map)");
+        System.out.println("Zlecenie: "+Zlecenie.getZlecenie(1));
+        //System.out.println("\nZlecenie: "+Zlecenie.getZlecenie(3));
+        System.out.println("Praca: " + Praca.getPraca(2));
+        //System.out.println("Praca: " + Praca.getPraca(9));
+
+        System.out.println("\nTest liczby zlecen brygadzisty");
+        System.out.println("zlecenia bryg4");
+        bryg4.getListaZlecen().forEach(System.out::println);
+
     }
 }
 
 //cos zrobvic z kolekcja prac w praca
-//w obu klasach statyczna metoda
-//do pozyskiwania obiektu podajac numer pracy lub zlecenia
-//uzyj map
 
-//uzyskaj w jakich zleceniach bral udzial brygadzista
-//oraz kazdy dzial ma miec mozliwosc dowiedziec sie jakich posiada
-//pracownikow
+
+
 

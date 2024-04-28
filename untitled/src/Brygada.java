@@ -6,7 +6,7 @@ public class Brygada {
     public int uniqueIDBrygada;
     private String nazwaBrygady;
     private Brygadzista liderBrygady;
-    List<Brygadzista> listaBrygadzistow;
+    private List<Brygadzista> listaBrygadzistow;
 
 
     public Brygada(String nazwaBrygady){
@@ -29,6 +29,9 @@ public class Brygada {
     }
     public Brygadzista getLiderBrygady(){
         return liderBrygady;
+    }
+    public List<Brygadzista> getListaBrygadzistow(){
+        return this.listaBrygadzistow;
     }
     public void setLiderBrygady(Brygadzista b){
         this.liderBrygady = b;

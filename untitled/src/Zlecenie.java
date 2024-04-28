@@ -3,6 +3,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Zlecenie implements Runnable{
+
+    private static HashMap<Integer,Zlecenie> obiektZlecenia = new HashMap<>();
     private Brygada brygada;
     private List<Praca> kolekcjaPrac;//no duplicate tasks
     private LocalDateTime dataUtworzenia=null; //will be set once the first task will begin
@@ -18,6 +20,7 @@ public class Zlecenie implements Runnable{
         else
             this.rodzajZlecenia = RodzajZlecenia.NIEPLANOWANE;
         this.kolekcjaPrac = new ArrayList<>();
+        obiektZlecenia.put(uniqueIdZlecenie,this);
 
 
     }
@@ -31,6 +34,12 @@ public class Zlecenie implements Runnable{
         }
         this.brygada=brygada;
         this.kolekcjaPrac = new ArrayList<>();
+        obiektZlecenia.put(uniqueIdZlecenie,this);
+        for(Brygadzista b: brygada.getListaBrygadzistow()){
+            b.getListaZlecen().add(this);
+        }
+        brygada.getLiderBrygady().getListaZlecen().add(this);
+
 
 
 
@@ -45,6 +54,8 @@ public class Zlecenie implements Runnable{
         }
         this.brygada = null;
         this.kolekcjaPrac = kolekcjaPrac;
+        obiektZlecenia.put(uniqueIdZlecenie,this);
+
 
 
 
@@ -61,6 +72,15 @@ public class Zlecenie implements Runnable{
         }
         this.brygada = brygada;
         this.kolekcjaPrac = kolekcjaPrac;
+        obiektZlecenia.put(uniqueIdZlecenie,this);
+        for(Brygadzista b: brygada.getListaBrygadzistow()){
+            b.getListaZlecen().add(this);
+        }
+        brygada.getLiderBrygady().getListaZlecen().add(this);
+
+
+
+
     }
 
     public void addPraca(Praca praca){
@@ -77,6 +97,11 @@ public class Zlecenie implements Runnable{
     public boolean addBrygada(Brygada b){
         if (this.brygada == null){
             this.brygada=b;
+            for(Brygadzista bb: brygada.getListaBrygadzistow()){
+                bb.getListaZlecen().add(this);
+            }
+            brygada.getLiderBrygady().getListaZlecen().add(this);
+
             return true;
         }
         return false;
@@ -139,7 +164,14 @@ public class Zlecenie implements Runnable{
     }
     public String toString(){
         return "Status: " + this.getstatusZlecenia() +", dataZakonczenia: " + this.getDataZakonczenia() + ", datautworzenia: " + this.getDataUtworzenia()
-                + ", rodzaj: " + this.getrodzajZlecenia();
+                + ", rodzaj: " + this.getrodzajZlecenia() + "ID Zlecenia: " + this.uniqueIdZlecenie;
+    }
+    public static Zlecenie getZlecenie(int i){
+        if(obiektZlecenia.containsKey(i))
+            return obiektZlecenia.get(i);
+        else{
+            throw new RuntimeException("Nie ma zlecenia z takim kluczem");
+        }
     }
 }
 

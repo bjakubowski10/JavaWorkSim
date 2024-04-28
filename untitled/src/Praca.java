@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class Praca extends Thread{
+    private static HashMap<Integer,Praca> obiektPracy = new HashMap<>();
     private RodzajPracy rodzajPracy;
     private int czasPracy;//sekundy
     private boolean czyZrealizowane = false;
@@ -18,6 +20,7 @@ public class Praca extends Thread{
         this.opis=opis;
         this.uniqueIdPraca=counter++;
         this.kolekcjaPrac=new ArrayList<>();
+        this.obiektPracy.put(uniqueIdPraca,this);
 
     }
     public String getOpis(){
@@ -68,6 +71,13 @@ public class Praca extends Thread{
                 ", czas: " + this.czasPracy +
                 ", zrealizowane: " + this.czyZrealizowane +
                 ", opis: " + this.getOpis();
+    }
+    public static Praca getPraca(int i){
+        if(obiektPracy.containsKey(i))
+            return obiektPracy.get(i);
+        else{
+            throw new RuntimeException("Nie ma pracy z takim kluczem");
+        }
     }
 
 

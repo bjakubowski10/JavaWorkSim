@@ -6,17 +6,22 @@ public class Brygadzista extends Uzytkownik{
     public static int counter=1;
     public int uniqueIdBryg;
     public ArrayList<Brygada> listaBrygad;
+    private ArrayList<Zlecenie> listaZlecen;
 
     public Brygadzista(String imie, String nazwisko, String dzialPracownika,String dataUrodzenia,String login, String haslo){
         super(imie, nazwisko, dzialPracownika, dataUrodzenia, login, haslo);
         this.uniqueIdBryg=counter++;
         this.listaBrygad=new ArrayList<>();
+        this.listaZlecen = new ArrayList<>();
     }
     public String toString(){
         return "Imie i nazwisko: " + this.imie + " " + this.nazwisko + ", dzial: " + this.dzialPracownika
                 + ", data urodzenia: " + this.getDataUrodzeniaString() + ", uniqueID: " + this.uniqueID
                 + ", uniqueIDUzyt: " + this.uniqueIDUzyt  + ", login: " + this.login + ", UniqueIDBryg: " + this.uniqueIdBryg
                 ;
+    }
+    public ArrayList<Zlecenie> getListaZlecen(){
+        return listaZlecen;
     }
 
     public static void printListaBrygad(Brygadzista b){
