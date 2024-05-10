@@ -8,7 +8,7 @@ public class Main {
 
         DzialPracownikow dzial1 = DzialPracownikow.createDzial("Wnetrza");
         //rzuci blad
-        //DzialPracownikow dzial2 = DzialPracownikow.createDzial("IT"); //ten kod nie zadiala
+        //DzialPracownikow dzial2 = DzialPracownikow.createDzial("Wnetrza");
         DzialPracownikow dzial3 = DzialPracownikow.createDzial("Finanse");
         DzialPracownikow dzial4 = DzialPracownikow.createDzial("Ogrody");
 
@@ -27,12 +27,14 @@ public class Main {
         Uzytkownik uzyt2 = Uzytkownik.createUzytkownik("Volde","Mort","Wnetrza","12/01/1965","volgod","voldemort");
         Uzytkownik uzyt3 = Uzytkownik.createUzytkownik("Luke","Skywalker","Wnetrza","11/10/1945","lukeS","obi");
         Uzytkownik uzyt4 = Uzytkownik.createUzytkownik("Henry","Skywalker","Ogrody","11/10/1948","HWEE","obiaw");
+        uzyt4.changeImie("Kenry");
         //rzuci blad
         //Uzytkownik uzyt5 = Uzytkownik.createUzytkownik("Obi","Kenobi","Niewiem","19/11/1922","obiwan","wan");
 
         //Pracownik.listaPracownikow.forEach(pracownik -> System.out.println(pracownik));
         Collections.sort(Pracownik.listaPracownikow);
         Pracownik.listaPracownikow.forEach(pracownik -> System.out.println(pracownik));
+
 
 
 
@@ -69,6 +71,7 @@ public class Main {
         test.add(bryg1);
         test.add(bryg1);
         brygada2.dodajPracownikaBrygady(test);
+        //brygada2.dodajPracownikaBrygady(uzyt1); bonus points: Nie mozna dodac uzytkownika
         System.out.println("lider brygada2: " +brygada2.getLiderBrygady());
         System.out.print("czlonkowie brygada2: ");
         brygada2.getCzlonkowieBrygady();
@@ -85,6 +88,8 @@ public class Main {
         Praca p3 = new Praca(RodzajPracy.OGOLNA,3,"demolka");
         Praca p4 = new Praca(RodzajPracy.WYMIANA,3,"nowe drzewka");
         Praca p5 = new Praca(RodzajPracy.OGOLNA,3,"budowa");
+        Praca p6 = new Praca(RodzajPracy.DEMONTAZ,2,"lazienka");
+        Praca p7 = new Praca(RodzajPracy.DEMONTAZ,1,"toaleta");
         //System.out.println(p5.equals(p2));
         ArrayList<Praca> pracaArray = new ArrayList<>();
         pracaArray.add(p1);
@@ -100,6 +105,22 @@ public class Main {
         Thread myThread = new Thread(z2);
         myThread.start();
         System.out.println("STatus zlecenia z2: " + z2.getstatusZlecenia());
+
+        //Bonus points: Zlecenie nie moze sie zaczac jak brygadzista jest na zleceniu
+        try{
+            Thread.sleep(10);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        /*Zlecenie z3 = new Zlecenie(false,brygada2);
+        z3.addPraca(p6);
+        z3.addPraca(p7);
+        Thread myThread3 = new Thread(z3);
+        myThread3.start();
+        System.out.println("z3 status: "+z3.getstatusZlecenia());
+        System.out.println("z3 utworzenie: "+z3.getDataUtworzenia());
+        */
+
 
         try{
             Thread.sleep(1000);
@@ -142,12 +163,13 @@ public class Main {
         System.out.println("\nTest liczby zlecen brygadzisty");
         System.out.println("zlecenia bryg4");
         bryg4.getListaZlecen().forEach(System.out::println);
+        //System.out.println("z3 status: "+z3.getstatusZlecenia());
+        //System.out.println("z3 utworzenie: "+z3.getDataUtworzenia());
+
+
 
     }
 }
-
-//cos zrobvic z kolekcja prac w praca
-
 
 
 

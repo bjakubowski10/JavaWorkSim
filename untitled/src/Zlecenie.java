@@ -1,6 +1,8 @@
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Zlecenie implements Runnable{
 
@@ -12,6 +14,8 @@ public class Zlecenie implements Runnable{
     private final RodzajZlecenia rodzajZlecenia;
     public static int counter = 1;
     public int uniqueIdZlecenie;
+    Lock lock = new ReentrantLock();
+
 
     public Zlecenie(boolean czyZaplanowane){
         this.uniqueIdZlecenie=counter++;
@@ -110,24 +114,39 @@ public class Zlecenie implements Runnable{
 
     @Override
     public void run() {
+        boolean czyZajetyTyp = false;
         if(this.brygada != null && !kolekcjaPrac.isEmpty()){
-            this.dataUtworzenia = LocalDateTime.now();
-            //kolekcjaPrac.forEach(Thread::start); z ta linia koda, main thread czeka na
-            //kazdy watek ale wszystkie watki oprocz main wykonuja sie w tym samym czasie
-
-            for(Praca p : kolekcjaPrac){
-                try{
-                    p.start();//start i join sa wywolywane jeden po drugim powodujac ze kazdy watek zaczyna sie w innym czasie
-                    p.join();
-                }catch (InterruptedException e){
-                    e.printStackTrace();
+            //zlecenie sie nie zacznie jak czlonek brygady jest na zleceniu
+            for (Brygadzista b : brygada.getListaBrygadzistow()){
+                for (Zlecenie z : b.getListaZlecen()){
+                    if(z.getDataUtworzenia() != null && z.getDataZakonczenia()== null && z != this){
+                        throw new RuntimeException("Zlecenie nie moze sie zaczac: brygadzista " + b.getImie() + " jest aktualnie na zleceniu");
+                    }
                 }
             }
 
 
 
+            this.dataUtworzenia = LocalDateTime.now();
+                //kolekcjaPrac.forEach(Thread::start); z ta linia koda, main thread czeka na
+                //kazdy watek ale wszystkie watki oprocz main wykonuja sie w tym samym czasie
+
+
+            for (Praca p : kolekcjaPrac) {
+                try {
+                    p.start();//start i join sa wywolywane jeden po drugim powodujac ze kazdy watek zaczyna sie w innym czasie
+                    p.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             this.dataZakonczenia = LocalDateTime.now();
+
         }
+
+
         else{
             throw new IllegalArgumentException("Brygada i kolekcjaPrac nie moga byc puste");
         }
@@ -164,7 +183,7 @@ public class Zlecenie implements Runnable{
     }
     public String toString(){
         return "Status: " + this.getstatusZlecenia() +", dataZakonczenia: " + this.getDataZakonczenia() + ", datautworzenia: " + this.getDataUtworzenia()
-                + ", rodzaj: " + this.getrodzajZlecenia() + "ID Zlecenia: " + this.uniqueIdZlecenie;
+                + ", rodzaj: " + this.getrodzajZlecenia() + " ID Zlecenia: " + this.uniqueIdZlecenie;
     }
     public static Zlecenie getZlecenie(int i){
         if(obiektZlecenia.containsKey(i))

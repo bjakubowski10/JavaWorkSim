@@ -7,7 +7,7 @@ public class DzialPracownikow {
     private int uniqueIQ;
     public static int counter = 1;
 
-    DzialPracownikow(String nazwa){
+    private DzialPracownikow(String nazwa){
         this.nazwa=nazwa;
         this.uniqueIQ=counter;
         counter++;
@@ -40,8 +40,8 @@ public class DzialPracownikow {
     }
 
     public static void pracownicyDzialu(DzialPracownikow dzial){
-        //filter out any Pracownik objects that do have matching dzial name as the given param
-        //iterate ouver each Pracownik passed through the filter and print it to the std output
+        //filter out any Pracownik objects that do not have a matching dzial name as the given param
+        //iterate ouver each Pracownik passed through the filter and print it to console
         Pracownik.listaPracownikow.stream()
                 .filter(pracownik -> pracownik.getDzialPracownika().equals(dzial.getNazwa()))
                 .forEach(System.out::println);
